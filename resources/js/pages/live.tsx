@@ -371,7 +371,7 @@ function StatusPill({ status }: { status: string }) {
 function Diagram({ reverbHost }: { reverbHost: string | null }) {
     const steps = [
         { title: 'Your browser', body: 'Laravel Echo' },
-        { title: 'Reverb in Rust', body: reverbHost ?? 'Laravel Omega' },
+        { title: 'Reverb in Rust', body: 'Laravel Omega' },
         { title: 'This app', body: 'Laravel 13' },
     ];
 
@@ -382,12 +382,12 @@ function Diagram({ reverbHost }: { reverbHost: string | null }) {
             </h2>
             <ol
                 role="list"
-                className="mt-4 grid gap-2 sm:grid-cols-[1fr_auto_1fr_auto_1fr] sm:items-center"
+                className="mt-4 grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)_auto_minmax(0,1fr)] sm:items-center"
             >
                 {steps.map((step, index) => (
                     <Fragment key={step.title}>
                         <li className="rounded-xl bg-white px-4 py-3 shadow-xs ring-1 ring-zinc-950/5">
-                            <p className="text-sm/6 font-medium text-zinc-950">
+                            <p className="text-sm/6 font-medium whitespace-nowrap text-zinc-950">
                                 {step.title}
                             </p>
                             <p className="truncate font-mono text-xs/5 text-zinc-500">
@@ -405,6 +405,14 @@ function Diagram({ reverbHost }: { reverbHost: string | null }) {
                     </Fragment>
                 ))}
             </ol>
+            {reverbHost && (
+                <p className="mt-3 flex flex-wrap items-baseline gap-x-2 text-sm/6 text-zinc-500">
+                    Connected to
+                    <code className="font-mono [overflow-wrap:anywhere] text-zinc-700">
+                        {reverbHost}
+                    </code>
+                </p>
+            )}
             <p className="mt-4 max-w-[56ch] text-base/7 text-pretty text-zinc-600 sm:text-sm/6">
                 Cursors and reactions are whispers, sent browser to browser
                 through Reverb without touching PHP. Shoutouts are saved by
