@@ -359,8 +359,8 @@ function StatusPill({ status }: { status: string }) {
 function Diagram({ reverbHost }: { reverbHost: string | null }) {
     const steps = [
         { title: 'Your browser', body: 'Laravel Echo' },
-        { title: 'Reverb in Rust', body: 'Laravel Omega' },
-        { title: 'This app', body: 'Laravel 13' },
+        { title: 'WebSockets', body: 'Reverb Omega' },
+        { title: 'Application', body: 'Laravel 13' },
     ];
 
     return (
