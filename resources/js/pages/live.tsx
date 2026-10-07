@@ -1,6 +1,6 @@
 import { Head, usePoll } from '@inertiajs/react';
 import { useConnectionStatus, useEchoPublic } from '@laravel/echo-react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 import { Composer } from '@/components/live/composer';
 import type { Cursor } from '@/components/live/cursors';
 import { Cursors } from '@/components/live/cursors';
@@ -250,7 +250,7 @@ export default function Live({ me, shoutouts, stats, reverbHost }: Props) {
         <>
             <Head title="This page is live" />
 
-            <div className="relative min-h-dvh overflow-x-hidden pb-32">
+            <div className="relative isolate min-h-dvh overflow-x-hidden pb-36">
                 <Backdrop energy={energy} />
                 <Cursors cursors={cursors} members={members} />
                 <Bursts
@@ -262,43 +262,44 @@ export default function Live({ me, shoutouts, stats, reverbHost }: Props) {
                     }
                 />
 
-                <header className="relative z-20 mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-5 pt-6 sm:px-8">
-                    <div className="flex items-center gap-3">
-                        <div className="flex size-10 items-center justify-center rounded-xl bg-[#f53003] text-2xl font-semibold shadow-[0_0_30px_-4px] shadow-[#f53003]">
+                <header className="relative z-20 mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-6 lg:px-8">
+                    <a
+                        href="/"
+                        aria-label="Homepage"
+                        className="flex items-center gap-3"
+                    >
+                        <div className="flex size-9 items-center justify-center rounded-xl bg-brand font-display text-2xl text-white shadow-md shadow-brand/30">
                             Ω
                         </div>
-                        <div className="leading-tight">
-                            <div className="font-semibold tracking-tight">
+                        <div>
+                            <p className="text-base/5 font-semibold whitespace-nowrap sm:text-sm/5">
                                 Omega Live
-                            </div>
+                            </p>
                             <StatusPill status={status} />
                         </div>
-                    </div>
+                    </a>
                     <Presence
                         members={members.length ? members : [me]}
                         me={me}
                     />
                 </header>
 
-                <main className="relative z-20 mx-auto mt-12 grid max-w-6xl gap-10 px-5 sm:px-8 lg:mt-20 lg:grid-cols-[1.15fr_1fr] lg:gap-14">
+                <main className="relative z-20 mx-auto grid max-w-7xl gap-12 px-6 pt-10 lg:grid-cols-[7fr_5fr] lg:gap-x-16 lg:px-8 lg:pt-20">
                     <section>
-                        <p className="text-sm font-medium tracking-wide text-[#f53003] uppercase">
+                        <p className="font-mono text-xs/5 font-medium tracking-wide text-brand uppercase">
                             Laravel Reverb, rewritten in Rust
                         </p>
-                        <h1 className="mt-3 text-5xl font-semibold tracking-tight text-balance sm:text-7xl">
-                            This page is{' '}
-                            <span className="text-[#f53003] [text-shadow:0_0_40px_rgba(245,48,3,0.55)]">
-                                live.
-                            </span>
+                        <h1 className="mt-4 max-w-[20ch] font-display text-7xl tracking-tight text-balance sm:text-8xl">
+                            This page is <em className="text-brand">live</em>.
                         </h1>
-                        <p className="mt-5 max-w-xl text-lg leading-relaxed text-pretty text-white/60">
-                            Everyone here is connected to a WebSocket server
-                            written in Rust, running inside Laravel Omega on
-                            Laravel Cloud. Move your mouse, hit a reaction, say
-                            hi.
+                        <p className="mt-6 max-w-[48ch] text-lg/8 text-pretty text-zinc-600">
+                            Everyone here is connected to one WebSocket server,
+                            written in Rust and running inside Laravel Omega on
+                            Laravel Cloud. Move your mouse, send a reaction, or
+                            say hello.
                         </p>
 
-                        <div className="mt-8">
+                        <div className="mt-10 max-w-xl">
                             <Composer
                                 onSend={(nonce) =>
                                     pending.current.set(
@@ -308,28 +309,19 @@ export default function Live({ me, shoutouts, stats, reverbHost }: Props) {
                                 }
                             />
                         </div>
+                    </section>
 
-                        <div className="mt-8">
-                            <StatsPanel
-                                stats={stats}
-                                roundTrip={roundTrip}
-                                reactions={reactions}
-                            />
-                        </div>
-
-                        <Diagram reverbHost={reverbHost} />
+                    <section className="lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:pt-2">
+                        <Feed shoutouts={feed} fresh={fresh} now={now} />
                     </section>
 
                     <section>
-                        <div className="mb-3 flex items-center justify-between">
-                            <h2 className="text-sm font-semibold text-white/70">
-                                Shoutouts
-                            </h2>
-                            <span className="text-xs text-white/35">
-                                newest first
-                            </span>
-                        </div>
-                        <Feed shoutouts={feed} fresh={fresh} now={now} />
+                        <StatsPanel
+                            stats={stats}
+                            roundTrip={roundTrip}
+                            reactions={reactions}
+                        />
+                        <Diagram reverbHost={reverbHost} />
                     </section>
                 </main>
 
@@ -341,13 +333,14 @@ export default function Live({ me, shoutouts, stats, reverbHost }: Props) {
 
 function Backdrop({ energy }: { energy: number }) {
     return (
-        <div className="pointer-events-none fixed inset-0 z-0">
-            <div className="absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.07)_1px,transparent_1px)] [background-size:24px_24px]" />
+        <div className="pointer-events-none fixed inset-0 -z-10">
+            <div className="absolute inset-0 bg-[radial-gradient(var(--color-zinc-950)_1px,transparent_1px)] mask-radial-from-40% mask-radial-at-top bg-size-[24px_24px] opacity-[0.07]" />
             <div
-                className="absolute -top-1/3 left-1/2 size-[70rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,#f53003_0%,transparent_60%)] blur-3xl transition-opacity duration-300"
-                style={{ opacity: 0.16 + energy * 0.5 }}
+                className="absolute -top-80 left-1/2 size-[64rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,var(--color-orange-300)_0%,var(--color-rose-200)_35%,transparent_65%)] opacity-(--glow) blur-3xl transition-opacity duration-300"
+                style={
+                    { '--glow': 0.35 + energy * 0.65 } as React.CSSProperties
+                }
             />
-            <div className="absolute -bottom-1/2 left-1/4 size-[50rem] rounded-full bg-[radial-gradient(circle,#8b5cf6_0%,transparent_60%)] opacity-15 blur-3xl" />
         </div>
     );
 }
@@ -356,22 +349,22 @@ function StatusPill({ status }: { status: string }) {
     const connected = status === 'connected';
 
     return (
-        <div className="flex items-center gap-1.5 text-xs text-white/50">
-            <span className="relative flex size-2">
+        <p className="flex items-center gap-1.5 text-sm/5 text-zinc-500 sm:text-xs/5">
+            <span className="relative flex size-1.5">
                 {connected && (
-                    <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                    <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-500 opacity-75" />
                 )}
                 <span
                     className={cn(
-                        'relative inline-flex size-2 rounded-full',
-                        connected ? 'bg-emerald-400' : 'bg-amber-400',
+                        'relative inline-flex size-1.5 rounded-full',
+                        connected ? 'bg-emerald-500' : 'bg-amber-500',
                     )}
                 />
             </span>
             {connected
                 ? 'Connected'
                 : status.charAt(0).toUpperCase() + status.slice(1)}
-        </div>
+        </p>
     );
 }
 
@@ -383,36 +376,40 @@ function Diagram({ reverbHost }: { reverbHost: string | null }) {
     ];
 
     return (
-        <div className="mt-8 rounded-2xl border border-white/[0.07] bg-white/[0.02] p-4">
-            <div className="text-xs font-medium text-white/45">
+        <div className="mt-6 rounded-2xl bg-zinc-950/[0.03] p-5">
+            <h2 className="text-sm/6 font-semibold text-zinc-950">
                 How it works
-            </div>
-            <ol className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center">
+            </h2>
+            <ol
+                role="list"
+                className="mt-4 grid gap-2 sm:grid-cols-[1fr_auto_1fr_auto_1fr] sm:items-center"
+            >
                 {steps.map((step, index) => (
-                    <li
-                        key={step.title}
-                        className="flex items-center gap-2 sm:flex-1"
-                    >
-                        <div className="min-w-0 flex-1 rounded-xl bg-white/[0.04] px-3 py-2">
-                            <div className="text-sm font-medium">
+                    <Fragment key={step.title}>
+                        <li className="rounded-xl bg-white px-4 py-3 shadow-xs ring-1 ring-zinc-950/5">
+                            <p className="text-sm/6 font-medium text-zinc-950">
                                 {step.title}
-                            </div>
-                            <div className="truncate font-mono text-[11px] text-white/40">
+                            </p>
+                            <p className="truncate font-mono text-xs/5 text-zinc-500">
                                 {step.body}
-                            </div>
-                        </div>
+                            </p>
+                        </li>
                         {index < steps.length - 1 && (
-                            <span className="hidden text-[#f53003] sm:block">
+                            <li
+                                aria-hidden="true"
+                                className="text-center text-zinc-400 max-sm:hidden"
+                            >
                                 ⇄
-                            </span>
+                            </li>
                         )}
-                    </li>
+                    </Fragment>
                 ))}
             </ol>
-            <p className="mt-3 text-xs leading-relaxed text-white/40">
-                Cursors and reactions are whispers: browser to browser through
-                Reverb, never touching PHP. Shoutouts are saved by Laravel, then
-                broadcast through Reverb’s HTTP API to everyone at once.
+            <p className="mt-4 max-w-[56ch] text-base/7 text-pretty text-zinc-600 sm:text-sm/6">
+                Cursors and reactions are whispers, sent browser to browser
+                through Reverb without touching PHP. Shoutouts are saved by
+                Laravel, then broadcast through Reverb’s HTTP API to everyone at
+                once.
             </p>
         </div>
     );

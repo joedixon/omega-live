@@ -5,9 +5,14 @@
 
 @theme {
     --font-sans:
-        'Instrument Sans', ui-sans-serif, system-ui, sans-serif,
+        'InterVariable', ui-sans-serif, system-ui, sans-serif,
         'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
         'Noto Color Emoji';
+    --font-sans--font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    --font-display: 'Instrument Serif', ui-serif, Georgia, serif;
+    --font-emoji:
+        'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;
+    --color-brand: #f53003;
 }
 
 @theme {

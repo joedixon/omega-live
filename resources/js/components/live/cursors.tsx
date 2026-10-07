@@ -27,16 +27,18 @@ export function Cursors({
                 return (
                     <div
                         key={id}
-                        className="absolute top-0 left-0 transition-transform duration-100 ease-linear will-change-transform"
-                        style={{
-                            transform: `translate(calc(${cursor.x} * 100vw), calc(${cursor.y} * 100vh))`,
-                        }}
+                        className="absolute top-0 left-0 [translate:var(--cursor)] transition-[translate] duration-100 ease-linear will-change-[translate]"
+                        style={
+                            {
+                                '--cursor': `calc(${cursor.x} * 100vw) calc(${cursor.y} * 100vh)`,
+                            } as React.CSSProperties
+                        }
                     >
                         <svg
-                            width="22"
-                            height="22"
+                            width="20"
+                            height="20"
                             viewBox="0 0 24 24"
-                            className="drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]"
+                            className="drop-shadow-[0_1px_2px_rgb(0_0_0/0.25)]"
                         >
                             <path
                                 d="M4 2.5 20 11l-7.2 1.8L9 20 4 2.5Z"
@@ -46,12 +48,12 @@ export function Cursors({
                                 strokeLinejoin="round"
                             />
                         </svg>
-                        <span
-                            className="ml-4 inline-block -translate-y-1 rounded-full px-2 py-0.5 text-xs font-medium whitespace-nowrap text-white shadow-lg"
+                        <div
+                            className="ml-4 -translate-y-1 rounded-full py-0.5 pr-2 pl-2 text-xs/5 font-medium whitespace-nowrap text-white shadow-md ring-1 ring-black/5"
                             style={{ backgroundColor: member.color }}
                         >
                             {member.name}
-                        </span>
+                        </div>
                     </div>
                 );
             })}

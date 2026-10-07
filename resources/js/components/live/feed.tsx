@@ -1,4 +1,5 @@
-import { initials } from '@/components/live/presence';
+import { Avatar } from '@/components/live/presence';
+import { cn } from '@/lib/utils';
 import type { Shoutout } from '@/types';
 
 export function Feed({
@@ -10,52 +11,58 @@ export function Feed({
     fresh: Set<number>;
     now: number;
 }) {
-    if (shoutouts.length === 0) {
-        return (
-            <div className="rounded-2xl border border-dashed border-white/10 p-8 text-center text-sm text-white/40">
-                No shoutouts yet. Be the first.
-            </div>
-        );
-    }
-
     return (
-        <ul className="flex flex-col gap-2.5">
-            {shoutouts.map((shoutout) => (
-                <li
-                    key={shoutout.id}
-                    className={
-                        fresh.has(shoutout.id)
-                            ? 'animate-slide-in rounded-2xl border border-white/15 bg-white/[0.07] p-3.5 shadow-[0_0_40px_-10px] shadow-[#f53003]/40'
-                            : 'rounded-2xl border border-white/[0.07] bg-white/[0.035] p-3.5'
-                    }
+        <div className="overflow-hidden rounded-2xl bg-white shadow-lg ring-1 shadow-zinc-950/5 ring-zinc-950/10">
+            <div className="flex items-center justify-between border-b border-zinc-950/5 px-5 py-4">
+                <h2 className="text-base/6 font-semibold sm:text-sm/6">
+                    Shoutouts
+                </h2>
+                <p className="flex items-center gap-2 text-sm/6 text-zinc-500">
+                    <span className="relative flex size-2">
+                        <span className="absolute inline-flex size-full animate-ping rounded-full bg-brand opacity-60" />
+                        <span className="relative inline-flex size-2 rounded-full bg-brand" />
+                    </span>
+                    Live
+                </p>
+            </div>
+
+            {shoutouts.length === 0 ? (
+                <p className="px-5 py-12 text-center text-base/7 text-zinc-500 sm:text-sm/6">
+                    No shoutouts yet. Say the first thing.
+                </p>
+            ) : (
+                <ul
+                    role="list"
+                    className="max-h-[36rem] divide-y divide-zinc-950/5 overflow-y-auto"
                 >
-                    <div className="flex items-start gap-3">
-                        <div
-                            className="flex size-8 shrink-0 items-center justify-center rounded-full text-[11px] font-semibold text-white"
-                            style={{ backgroundColor: shoutout.color }}
+                    {shoutouts.map((shoutout) => (
+                        <li
+                            key={shoutout.id}
+                            className={cn(
+                                'flex gap-3 px-5 py-4 transition-colors duration-[2000ms]',
+                                fresh.has(shoutout.id) &&
+                                    'animate-slide-in bg-orange-50',
+                            )}
                         >
-                            {initials(shoutout.name)}
-                        </div>
-                        <div className="min-w-0 flex-1">
-                            <div className="flex items-baseline justify-between gap-2 text-xs">
-                                <span
-                                    className="font-semibold"
-                                    style={{ color: shoutout.color }}
-                                >
-                                    {shoutout.name}
-                                </span>
-                                <span className="shrink-0 text-white/35 tabular-nums">
-                                    {ago(shoutout.at, now)}
-                                </span>
+                            <Avatar member={shoutout} className="size-9" />
+                            <div className="min-w-0 flex-1">
+                                <div className="flex items-baseline justify-between gap-2">
+                                    <p className="text-sm/6 font-semibold text-zinc-950">
+                                        {shoutout.name}
+                                    </p>
+                                    <p className="shrink-0 text-xs/6 text-zinc-400 tabular-nums">
+                                        {ago(shoutout.at, now)}
+                                    </p>
+                                </div>
+                                <p className="text-base/6 break-words text-zinc-700 sm:text-sm/6">
+                                    {shoutout.body}
+                                </p>
                             </div>
-                            <p className="mt-0.5 text-[15px] leading-snug break-words text-white/90">
-                                {shoutout.body}
-                            </p>
-                        </div>
-                    </div>
-                </li>
-            ))}
-        </ul>
+                        </li>
+                    ))}
+                </ul>
+            )}
+        </div>
     );
 }
 
@@ -71,16 +78,16 @@ function ago(at: string | null, now: number): string {
     }
 
     if (seconds < 60) {
-        return `${seconds}s`;
+        return `${seconds}s ago`;
     }
 
     if (seconds < 3600) {
-        return `${Math.floor(seconds / 60)}m`;
+        return `${Math.floor(seconds / 60)}m ago`;
     }
 
     if (seconds < 86400) {
-        return `${Math.floor(seconds / 3600)}h`;
+        return `${Math.floor(seconds / 3600)}h ago`;
     }
 
-    return `${Math.floor(seconds / 86400)}d`;
+    return `${Math.floor(seconds / 86400)}d ago`;
 }
