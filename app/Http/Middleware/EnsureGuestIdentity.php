@@ -35,7 +35,7 @@ class EnsureGuestIdentity
     {
         if (! Auth::check()) {
             Auth::login(User::create([
-                'name' => Arr::random(self::ADJECTIVES).' '.Arr::random(self::ANIMALS),
+                'name' => $this->uniqueName(),
                 'email' => Str::uuid().'@guests.omega-reverb.test',
                 'password' => Str::password(32),
                 'color' => Arr::random(self::COLORS),
@@ -43,5 +43,22 @@ class EnsureGuestIdentity
         }
 
         return $next($request);
+    }
+
+    /**
+     * A name no other guest has, numbered once every combination is taken.
+     */
+    private function uniqueName(): string
+    {
+        $names = collect(self::ADJECTIVES)->crossJoin(self::ANIMALS)->map(fn (array $parts) => implode(' ', $parts));
+        $available = $names->diff(User::whereIn('name', $names)->pluck('name'));
+
+        if ($available->isNotEmpty()) {
+            return $available->random();
+        }
+
+        $name = $names->random();
+
+        return $name.' '.(User::where('name', 'like', $name.' %')->count() + 2);
     }
 }

@@ -29,6 +29,15 @@ test('visitors get a guest identity', function () {
     expect(User::count())->toBe(1);
 });
 
+test('guests get names no one else has', function () {
+    foreach (range(1, 40) as $visit) {
+        auth()->logout();
+        $this->get('/')->assertOk();
+    }
+
+    expect(User::pluck('name')->duplicates())->toBeEmpty();
+});
+
 test('health checks do not create guests', function () {
     $this->get('/up')->assertOk();
 
