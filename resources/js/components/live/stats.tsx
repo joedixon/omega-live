@@ -13,22 +13,22 @@ export function StatsPanel({
         {
             label: 'Open connections',
             value: stats.connections ?? '–',
-            hint: 'From Reverb’s HTTP API',
+            hint: 'Reverb’s API',
         },
         {
             label: 'Shoutouts',
             value: stats.shoutouts,
-            hint: 'Broadcast by Laravel',
+            hint: 'From Laravel',
         },
         {
             label: 'Reactions seen',
             value: reactions,
-            hint: 'Browser to browser',
+            hint: 'Peer to peer',
         },
         {
             label: 'Your round trip',
             value: roundTrip === null ? '–' : `${roundTrip} ms`,
-            hint: 'Post, broadcast, receive',
+            hint: 'Post to receipt',
         },
     ];
 

@@ -1,4 +1,4 @@
-# Omega Live
+# Omega Reverb
 
 A page that shows you it's live. Everyone viewing it shares one room:
 

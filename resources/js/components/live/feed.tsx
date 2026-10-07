@@ -19,8 +19,8 @@ export function Feed({
                 </h2>
                 <p className="flex items-center gap-2 text-sm/6 text-zinc-500">
                     <span className="relative flex size-2">
-                        <span className="absolute inline-flex size-full animate-ping rounded-full bg-brand opacity-60" />
-                        <span className="relative inline-flex size-2 rounded-full bg-brand" />
+                        <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-500 opacity-75" />
+                        <span className="relative inline-flex size-2 rounded-full bg-emerald-500" />
                     </span>
                     Live
                 </p>

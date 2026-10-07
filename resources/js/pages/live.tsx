@@ -5,6 +5,7 @@ import { Composer } from '@/components/live/composer';
 import type { Cursor } from '@/components/live/cursors';
 import { Cursors } from '@/components/live/cursors';
 import { Feed } from '@/components/live/feed';
+import { Logo } from '@/components/live/logo';
 import { Presence } from '@/components/live/presence';
 import type { Burst } from '@/components/live/reactions';
 import { Bursts, EMOJIS, ReactionBar } from '@/components/live/reactions';
@@ -248,7 +249,7 @@ export default function Live({ me, shoutouts, stats, reverbHost }: Props) {
 
     return (
         <>
-            <Head title="This page is live" />
+            <Head />
 
             <div className="relative isolate min-h-dvh overflow-x-hidden pb-36">
                 <Backdrop energy={energy} />
@@ -268,12 +269,12 @@ export default function Live({ me, shoutouts, stats, reverbHost }: Props) {
                         aria-label="Homepage"
                         className="flex items-center gap-3"
                     >
-                        <div className="flex size-9 items-center justify-center rounded-xl bg-brand font-display text-2xl text-white shadow-md shadow-brand/30">
-                            Ω
+                        <div className="flex size-10 items-center justify-center rounded-xl bg-brand text-white shadow-md shadow-brand/30">
+                            <Logo className="size-8" />
                         </div>
                         <div>
                             <p className="text-base/5 font-semibold whitespace-nowrap sm:text-sm/5">
-                                Omega Live
+                                Omega Reverb
                             </p>
                             <StatusPill status={status} />
                         </div>
@@ -284,22 +285,9 @@ export default function Live({ me, shoutouts, stats, reverbHost }: Props) {
                     />
                 </header>
 
-                <main className="relative z-20 mx-auto grid max-w-7xl gap-12 px-6 pt-10 lg:grid-cols-[7fr_5fr] lg:gap-x-16 lg:px-8 lg:pt-20">
+                <main className="relative z-20 mx-auto grid max-w-7xl gap-10 px-6 pt-6 lg:grid-cols-[7fr_5fr] lg:grid-rows-[auto_1fr] lg:items-start lg:gap-x-16 lg:px-8 lg:pt-12">
                     <section>
-                        <p className="font-mono text-xs/5 font-medium tracking-wide text-brand uppercase">
-                            Laravel Reverb, rewritten in Rust
-                        </p>
-                        <h1 className="mt-4 max-w-[20ch] font-display text-7xl tracking-tight text-balance sm:text-8xl">
-                            This page is <em className="text-brand">live</em>.
-                        </h1>
-                        <p className="mt-6 max-w-[48ch] text-lg/8 text-pretty text-zinc-600">
-                            Everyone here is connected to one WebSocket server,
-                            written in Rust and running inside Laravel Omega on
-                            Laravel Cloud. Move your mouse, send a reaction, or
-                            say hello.
-                        </p>
-
-                        <div className="mt-10 max-w-xl">
+                        <div>
                             <Composer
                                 onSend={(nonce) =>
                                     pending.current.set(
@@ -311,7 +299,7 @@ export default function Live({ me, shoutouts, stats, reverbHost }: Props) {
                         </div>
                     </section>
 
-                    <section className="lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:pt-2">
+                    <section className="lg:col-start-2 lg:row-span-2 lg:row-start-1">
                         <Feed shoutouts={feed} fresh={fresh} now={now} />
                     </section>
 
@@ -413,7 +401,7 @@ function Diagram({ reverbHost }: { reverbHost: string | null }) {
                     </code>
                 </p>
             )}
-            <p className="mt-4 max-w-[56ch] text-base/7 text-pretty text-zinc-600 sm:text-sm/6">
+            <p className="mt-4 text-base/7 text-pretty text-zinc-600 sm:text-sm/6">
                 Cursors and reactions are whispers, sent browser to browser
                 through Reverb without touching PHP. Shoutouts are saved by
                 Laravel, then broadcast through Reverb’s HTTP API to everyone at
