@@ -36,7 +36,7 @@ class EnsureGuestIdentity
         if (! Auth::check()) {
             Auth::login(User::create([
                 'name' => Arr::random(self::ADJECTIVES).' '.Arr::random(self::ANIMALS),
-                'email' => Str::uuid().'@guests.omega-live.test',
+                'email' => Str::uuid().'@guests.omega-reverb.test',
                 'password' => Str::password(32),
                 'color' => Arr::random(self::COLORS),
             ]), remember: true);
